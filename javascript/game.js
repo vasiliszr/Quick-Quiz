@@ -17,12 +17,12 @@ const CORRECT_BONUS = 10;
 const MAX_QUESTIONS = 10;
  
 //fetch("../json/questions.json").then(res => {
-fetch('https://opentdb.com/api.php?amount=100&category=11&difficulty=easy&type=multiple').then(res => {
-    return res.json();
+fetch('https://opentdb.com/api.php?amount=100&category=11&difficulty=easy&type=multiple').then(response => {
+    return response.json();
 }).then(loadedQuestions => {
     questions = loadedQuestions.results.map(loadedQuestion => {
         const formattedQuestion = {
-            question: loadedQuestion.question,
+            question: loadedQuestion.question.replace(/&quot;/g,'"').replace(/&#039;/g, "'"),
         };
 
         const answerChoices = [... loadedQuestion.incorrect_answers];

@@ -25,9 +25,9 @@ fetch('https://opentdb.com/api.php?amount=100&category=11&difficulty=easy&type=m
             question: loadedQuestion.question.replace(/&quot;/g,'"').replace(/&#039;/g, "'"),
         };
 
-        const answerChoices = [... loadedQuestion.incorrect_answers];
+        const answerChoices = [... loadedQuestion.incorrect_answers.replace(/&quot;/g,'"').replace(/&#039;/g, "'")];
         formattedQuestion.answer = Math.floor(Math.random() * 4) + 1;
-        answerChoices.splice(formattedQuestion.answer - 1, 0, loadedQuestion.correct_answer);
+        answerChoices.splice(formattedQuestion.answer - 1, 0, loadedQuestion.correct_answer.replace(/&quot;/g,'"').replace(/&#039;/g, "'"));
         answerChoices.forEach((choice, index) => {
             formattedQuestion['choice' + (index + 1)] = choice;
         });
@@ -54,7 +54,6 @@ getNewQuestion = () => {
         return window.location.assign('end.html');
     }
     questionCounter++;
-    //progressText.innerText = 'Question ' + questionCounter + "/" + MAX_QUESTIONS;
     progressText.innerText = `Question ${questionCounter}/ ${MAX_QUESTIONS}`;
     progressBarFull.style.width = (questionCounter/MAX_QUESTIONS) * 100 + "%";
 

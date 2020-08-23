@@ -22,14 +22,17 @@ fetch('https://opentdb.com/api.php?amount=100&category=11&difficulty=easy&type=m
 }).then(loadedQuestions => {
     questions = loadedQuestions.results.map(loadedQuestion => {
         const formattedQuestion = {
-            question: loadedQuestion.question.replace(/&quot;/g,'"').replace(/&#039;/g, "'"),
+            question: loadedQuestion.question.replace(/&quot;/g,'"').replace(/&#039;/g, "'").replace(/&amp;/g, '&'),
         };
 
-        const answerChoices = [... loadedQuestion.incorrect_answers.replace(/&quot;/g,'"').replace(/&#039;/g, "'")];
+        const answerChoices = [... loadedQuestion.incorrect_answers];
         formattedQuestion.answer = Math.floor(Math.random() * 4) + 1;
-        answerChoices.splice(formattedQuestion.answer - 1, 0, loadedQuestion.correct_answer.replace(/&quot;/g,'"').replace(/&#039;/g, "'"));
+        answerChoices.splice(formattedQuestion.answer - 1, 0, loadedQuestion.correct_answer);
         answerChoices.forEach((choice, index) => {
-            formattedQuestion['choice' + (index + 1)] = choice;
+            formattedQuestion['choice' + (index + 1)] = choice.replace(/&quot;/g,'"')
+                                                              .replace(/&#039;/g, "'")
+                                                              .replace(/&amp;/g, '&')
+                                                              .replace(/&ntilde;&aacute;/g, 'ñá');
         });
 
         return formattedQuestion;

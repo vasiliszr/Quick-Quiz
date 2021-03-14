@@ -14,9 +14,8 @@ let availableQuestions = [];
 let questions = [];
 
 const CORRECT_BONUS = 10;
-const MAX_QUESTIONS = 10;
- 
-//fetch("../json/questions.json").then(res => {
+const MAX_QUESTIONS = 10; 
+
 fetch('https://opentdb.com/api.php?amount=100&category=11&difficulty=easy&type=multiple').then(response => {
     return response.json();
 }).then(loadedQuestions => {
@@ -32,6 +31,7 @@ fetch('https://opentdb.com/api.php?amount=100&category=11&difficulty=easy&type=m
             formattedQuestion['choice' + (index + 1)] = choice.replace(/&quot;/g,'"')
                                                               .replace(/&#039;/g, "'")
                                                               .replace(/&amp;/g, '&')
+                                                              .replace(/&rsquo;/g, "'")
                                                               .replace(/&ntilde;&aacute;/g, 'ñá');
         });
 
